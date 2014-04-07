@@ -1,0 +1,11 @@
+.row.list-group-item.list-group-item-info
+  .col-md-2
+    %small= link_to l(date, format: :long), events_path(scopes: scopes.to_scope(after: date.iso8601))
+  .col-md-1
+    =link_to channel, events_path(scopes: scopes.to_scope(channel: channel))
+  .col-md-9
+    %i.fa.fa-quote-left.fa-fw
+    %strong
+      = link_to nick, events_path(scopes: scopes.to_scope(author: nick))
+    = raw message
+    %i.fa.fa-quote-right.fa-fw

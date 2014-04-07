@@ -1,0 +1,8 @@
+.row.list-group-item.list-group-item-warning
+  .col-md-3
+    %small= link_to l(date, format: :long), events_path(scopes: scopes.to_scope(after: date.iso8601))
+  .col-md-9
+    %i.fa.fa-arrow-circle-o-right
+    = link_to nick, events_path(scopes: scopes.to_scope(author: nick))
+    joined
+    =link_to channel, events_path(scopes: scopes.to_scope(channel: channel))

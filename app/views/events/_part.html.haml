@@ -1,0 +1,10 @@
+.row.list-group-item.list-group-item-warning
+  .col-md-3
+    %small= link_to l(date, format: :long), events_path(scopes: scopes.to_scope(after: date.iso8601))
+  .col-md-9
+    %i.fa.fa-arrow-circle-o-left
+    = link_to nick, events_path(scopes: scopes.to_scope(author: nick))
+    left
+    =link_to channel, events_path(scopes: scopes.to_scope(channel: channel))
+    - if message.present?
+      %em (#{message})

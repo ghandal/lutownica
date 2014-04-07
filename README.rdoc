@@ -1,0 +1,5 @@
+== Lutownica
+
+Web browser for IRC messages logged with m_sqllog module for Inspircd.
+
+License: MIT

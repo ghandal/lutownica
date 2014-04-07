@@ -1,0 +1,63 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    %title Arkency
+    = stylesheet_link_tag "application", media: "all"
+    = csrf_meta_tag
+  %body
+    - if flash[:error]
+      .alert.alert-danger.alert-dismissable
+        = link_to '#', class: 'close', data: {dismiss: 'alert'} do
+          &times;
+        = flash[:error]
+    - if flash[:notice]
+      .alert.alert-success.alert-dismissable
+        = link_to '#', class: 'close', data: {dismiss: 'alert'} do
+          &times;
+        = flash[:notice]
+    %nav.navbar.navbar-default.navbar-static-top{:role => "navigation"}
+      .container-fluid
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          = link_to root_path, class: 'navbar-brand' do
+            Arkency IRC
+        .navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            - channels.each do |channel|
+              - if scopes[:channel] == channel
+                %li.active
+                  = link_to channel, events_path(scopes: scopes.to_new_scope(channel: channel))
+              - else
+                %li
+                  = link_to channel, events_path(scopes: scopes.to_new_scope(channel: channel))
+        = form_tag events_path(scopes: scopes.to_scope), method: :get, class: 'navbar-form navbar-right', role: 'search' do
+          .form-group.input-group
+            = search_field_tag :q, params[:q], placeholder: 'Search...'
+            = button_tag class: 'btn btn-default btn-xs', type: 'submit', title: 'Search' do
+              %i.fa.fa-search
+    .panel.panel-default
+      .panel-heading
+        - if scopes.present?
+          %dl.dl-horizontal
+            - scopes.each do |scope, value|
+              %dt= scope.titleize
+              %dd
+                = value
+                = link_to events_path(scopes: scopes.to_scope(scope => nil)), title: 'Remove scope', class: 'btn btn-xs btn-danger' do
+                  %i.fa.fa-trash-o.fa-fw
+        = paginate events
+      .panel-body
+        .list-group
+          - unless events.present?
+            .list-group-item.list-group-item-warning No events for this channel :-(
+          - events.each do |event|
+            = renderer.render event
+      .panel-footer
+        = paginate events
+    = javascript_include_tag "application"
